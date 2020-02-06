@@ -1,0 +1,90 @@
+-- 그레이들_프로젝트
+DROP SCHEMA IF EXISTS gradle_jdbc_study;
+
+-- 그레이들_프로젝트
+CREATE SCHEMA gradle_jdbc_study;
+
+-- 직책
+CREATE TABLE gradle_jdbc_study.title (
+	title_no   INTEGER     NOT NULL COMMENT '직책번호', -- 직책번호
+	title_name VARCHAR(20) NOT NULL COMMENT '직책명' -- 직책명
+)
+COMMENT '직책';
+
+-- 직책
+ALTER TABLE gradle_jdbc_study.title
+	ADD CONSTRAINT PK_title -- 직책 기본키
+		PRIMARY KEY (
+			title_no -- 직책번호
+		);
+
+-- 부서
+CREATE TABLE gradle_jdbc_study.department (
+	dept_no   INTEGER     NOT NULL COMMENT '부서번호', -- 부서번호
+	dept_name VARCHAR(20) NOT NULL COMMENT '부서명', -- 부서명
+	floor     INTEGER     NULL     COMMENT '위치' -- 위치
+)
+COMMENT '부서';
+
+-- 부서
+ALTER TABLE gradle_jdbc_study.department
+	ADD CONSTRAINT PK_department -- 부서 기본키
+		PRIMARY KEY (
+			dept_no -- 부서번호
+		);
+
+-- 사원
+CREATE TABLE gradle_jdbc_study.employee (
+	emp_no   INTEGER     NOT NULL COMMENT '사원번호', -- 사원번호
+	emp_name VARCHAR(20) NOT NULL COMMENT '사원명', -- 사원명
+	title    INTEGER     NULL     COMMENT '직책', -- 직책
+	manager  INTEGER     NULL     COMMENT '직속상사', -- 직속상사
+	salary   INTEGER     NULL     COMMENT '급여', -- 급여
+	dept     INTEGER     NULL     COMMENT '부서', -- 부서
+	pic      LONGBLOB    NULL     COMMENT '증명사진', -- 증명사진
+	pass     CHAR(41)    NULL     COMMENT '비밀번호' -- 비밀번호
+)
+COMMENT '사원';
+
+-- 사원
+ALTER TABLE gradle_jdbc_study.employee
+	ADD CONSTRAINT PK_employee -- 사원 기본키
+		PRIMARY KEY (
+			emp_no -- 사원번호
+		);
+
+-- 사원
+ALTER TABLE gradle_jdbc_study.employee
+	ADD CONSTRAINT FK_title_TO_employee -- 직책 -> 사원
+		FOREIGN KEY (
+			title -- 직책
+		)
+		REFERENCES gradle_jdbc_study.title ( -- 직책
+			title_no -- 직책번호
+		);
+
+-- 사원
+ALTER TABLE gradle_jdbc_study.employee
+	ADD CONSTRAINT FK_employee_TO_employee -- 사원 -> 사원
+		FOREIGN KEY (
+			manager -- 직속상사
+		)
+		REFERENCES gradle_jdbc_study.employee ( -- 사원
+			emp_no -- 사원번호
+		);
+
+-- 사원
+ALTER TABLE gradle_jdbc_study.employee
+	ADD CONSTRAINT FK_department_TO_employee -- 부서 -> 사원
+		FOREIGN KEY (
+			dept -- 부서
+		)
+		REFERENCES gradle_jdbc_study.department ( -- 부서
+			dept_no -- 부서번호
+		);
+		
+-- 사용자 추가
+drop user if exists 'user_gradle_jdbc'@'localhost';
+grant all privileges on gradle_jdbc_study.* to 'user_gradle_jdbc_study'@'localhost'
+identified by 'rootroot';
+flush privileges;
