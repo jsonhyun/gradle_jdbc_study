@@ -1,0 +1,14 @@
+package gradle_jdbc_study.dao;
+
+import java.util.List;
+
+import gradle_jdbc_study.dto.Title;
+
+public interface TitleDao {
+	Title selectTitleByNo(Title titled);
+	List<Title> selectTitleByAll();
+	
+	int insertTitle(Title title);
+	int updateTitle(Title title);
+	int deleteTitle(Title title);
+}
