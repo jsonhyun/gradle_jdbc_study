@@ -55,16 +55,6 @@ ALTER TABLE gradle_jdbc_study.employee
 
 -- 사원
 ALTER TABLE gradle_jdbc_study.employee
-	ADD CONSTRAINT FK_title_TO_employee -- 직책 -> 사원
-		FOREIGN KEY (
-			title -- 직책
-		)
-		REFERENCES gradle_jdbc_study.title ( -- 직책
-			title_no -- 직책번호
-		);
-
--- 사원
-ALTER TABLE gradle_jdbc_study.employee
 	ADD CONSTRAINT FK_employee_TO_employee -- 사원 -> 사원
 		FOREIGN KEY (
 			manager -- 직속상사
