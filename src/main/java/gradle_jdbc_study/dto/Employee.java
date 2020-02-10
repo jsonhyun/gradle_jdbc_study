@@ -45,6 +45,29 @@ public class Employee {
 		this.hireDate = hireDate;
 		this.pic = pic;
 	}
+	
+	public Employee(int empNo, String empName, Title title, Employee manager, int salary, Department dept,
+			Date hireDate) {
+		this.empNo = empNo;
+		this.empName = empName;
+		this.title = title;
+		this.manager = manager;
+		this.salary = salary;
+		this.dept = dept;
+		this.hireDate = hireDate;
+	}
+
+	public Employee(int empNo, String empName, Title title, Employee manager, int salary, Department dept,
+			Date hireDate, byte[] pic) {
+		this.empNo = empNo;
+		this.empName = empName;
+		this.title = title;
+		this.manager = manager;
+		this.salary = salary;
+		this.dept = dept;
+		this.hireDate = hireDate;
+		this.pic = pic;
+	}
 
 	public int getEmpNo() {
 		return empNo;
