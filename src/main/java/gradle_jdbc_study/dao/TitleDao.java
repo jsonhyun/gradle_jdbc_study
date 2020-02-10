@@ -5,7 +5,7 @@ import java.util.List;
 import gradle_jdbc_study.dto.Title;
 
 public interface TitleDao {
-	Title selectTitleByNo(Title titled);
+	Title selectTitleByNo(Title title);
 	List<Title> selectTitleByAll();
 	
 	int insertTitle(Title title);

@@ -7,47 +7,54 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import gradle_jdbc_study.dao.TitleDao;
+import gradle_jdbc_study.dao.DepartmentDao;
 import gradle_jdbc_study.ds.MySqlDataSource;
-import gradle_jdbc_study.dto.Title;
+import gradle_jdbc_study.dto.Department;
 import gradle_jdbc_study.util.LogUtil;
 
-public class TitleDaoImpl implements TitleDao {
-	private static final TitleDaoImpl Instance = new TitleDaoImpl();
-	
-	private TitleDaoImpl() {}
-	
-	public static TitleDaoImpl getInstance() {
+public class DepartmentDaoImpl implements DepartmentDao {
+	private static final DepartmentDaoImpl Instance = new DepartmentDaoImpl();
+	    
+	private DepartmentDaoImpl() {}
+
+	public static DepartmentDaoImpl getInstance() {
 		return Instance;
 	}
 
 	@Override
-	public Title selectTitleByNo(Title title) {
-		String sql = "select title_no, title_name from title where title_no=?";
+	public Department selectDepartmentByNo(Department department) {
+		String sql = "select dept_no, dept_name, floor from department where dept_no = ?";
 		try(Connection con = MySqlDataSource.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql);){
-			pstmt.setInt(1, title.getTitleNo());
+			pstmt.setInt(1, department.getDeptNo());
 			LogUtil.prnLog(pstmt);
 			try(ResultSet rs = pstmt.executeQuery()){
 				if(rs.next()) {
-					return getTitle(rs);
+					return getDepartment(rs);
 				}
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} 
+		}
 		return null;
 	}
 
+	private Department getDepartment(ResultSet rs) throws SQLException {
+		int deptNo = rs.getInt("dept_no");
+		String deptName = rs.getString("dept_name");
+		int floor = rs.getInt("floor");
+		return new Department(deptNo, deptName, floor);
+	}
+
 	@Override
-	public List<Title> selectTitleByAll() {
-		String sql = "select title_no, title_name from title";
+	public List<Department> selectDepartmentByAll() {
+		String sql = "select dept_no, dept_name, floor from department";
 		try(Connection con = MySqlDataSource.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql);
 				ResultSet rs = pstmt.executeQuery()){
-			List<Title> list = new ArrayList<>();
+			List<Department> list = new ArrayList<>();
 			while(rs.next()) {
-				list.add(getTitle(rs));
+				list.add(getDepartment(rs));
 			}
 			return list;
 		} catch (SQLException e) {
@@ -56,20 +63,15 @@ public class TitleDaoImpl implements TitleDao {
 		return null;
 	}
 
-	private Title getTitle(ResultSet rs) throws SQLException {
-		int titleNo = rs.getInt("title_no");
-		String titleName = rs.getString("title_name");
-		return new Title(titleNo, titleName);
-	}
-
 	@Override
-	public int insertTitle(Title title) {
-		String sql = "insert into title values(?, ?)";
+	public int insertDepartment(Department department) {
+		String sql = "insert into department values(?,?,?)";
 		int res = -1;
 		try(Connection con = MySqlDataSource.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)){
-			pstmt.setInt(1, title.getTitleNo());
-			pstmt.setString(2, title.getTitleName());
+			pstmt.setInt(1, department.getDeptNo());
+			pstmt.setString(2, department.getDeptName());
+			pstmt.setInt(3, department.getFloor());
 			LogUtil.prnLog(pstmt);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -79,12 +81,12 @@ public class TitleDaoImpl implements TitleDao {
 	}
 
 	@Override
-	public int updateTitle(Title title) {
-		String sql = "update title set title_name = '회장' where title_no = ?";
+	public int updateDepartment(Department department) {
+		String sql = "update department set dept_name = '인사' where dept_no = ?";
 		int res = -1;
 		try(Connection con = MySqlDataSource.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)){
-			pstmt.setInt(1, title.getTitleNo());
+			pstmt.setInt(1, department.getDeptNo());
 			LogUtil.prnLog(pstmt);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -94,18 +96,17 @@ public class TitleDaoImpl implements TitleDao {
 	}
 
 	@Override
-	public int deleteTitle(Title title) {
-		String sql = "delete from title where title_no = ?";
+	public int deleteDepartment(Department department) {
+		String sql = "delete from department where dept_no = ?";
 		int res = -1;
 		try(Connection con = MySqlDataSource.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql)){
-			pstmt.setInt(1, title.getTitleNo());
+			pstmt.setInt(1, department.getDeptNo());
 			LogUtil.prnLog(pstmt);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		
 		return res;
 	}
 

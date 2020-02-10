@@ -1,79 +1,80 @@
--- ±×·¹ÀÌµé_ÇÁ·ÎÁ§Æ®
+-- ê·¸ë ˆì´ë“¤_í”„ë¡œì íŠ¸
 DROP SCHEMA IF EXISTS gradle_jdbc_study;
 
--- ±×·¹ÀÌµé_ÇÁ·ÎÁ§Æ®
+-- ê·¸ë ˆì´ë“¤_í”„ë¡œì íŠ¸
 CREATE SCHEMA gradle_jdbc_study;
 
--- Á÷Ã¥
+-- ì§ì±…
 CREATE TABLE gradle_jdbc_study.title (
-	title_no   INTEGER     NOT NULL COMMENT 'Á÷Ã¥¹øÈ£', -- Á÷Ã¥¹øÈ£
-	title_name VARCHAR(20) NOT NULL COMMENT 'Á÷Ã¥¸í' -- Á÷Ã¥¸í
+	title_no   INTEGER     NOT NULL COMMENT 'ì§ì±…ë²ˆí˜¸', -- ì§ì±…ë²ˆí˜¸
+	title_name VARCHAR(20) NOT NULL COMMENT 'ì§ì±…ëª…' -- ì§ì±…ëª…
 )
-COMMENT 'Á÷Ã¥';
+COMMENT 'ì§ì±…';
 
--- Á÷Ã¥
+-- ì§ì±…
 ALTER TABLE gradle_jdbc_study.title
-	ADD CONSTRAINT PK_title -- Á÷Ã¥ ±âº»Å°
+	ADD CONSTRAINT PK_title -- ì§ì±… ê¸°ë³¸í‚¤
 		PRIMARY KEY (
-			title_no -- Á÷Ã¥¹øÈ£
+			title_no -- ì§ì±…ë²ˆí˜¸
 		);
 
--- ºÎ¼­
+-- ë¶€ì„œ
 CREATE TABLE gradle_jdbc_study.department (
-	dept_no   INTEGER     NOT NULL COMMENT 'ºÎ¼­¹øÈ£', -- ºÎ¼­¹øÈ£
-	dept_name VARCHAR(20) NOT NULL COMMENT 'ºÎ¼­¸í', -- ºÎ¼­¸í
-	floor     INTEGER     NULL     COMMENT 'À§Ä¡' -- À§Ä¡
+	dept_no   INTEGER     NOT NULL COMMENT 'ë¶€ì„œë²ˆí˜¸', -- ë¶€ì„œë²ˆí˜¸
+	dept_name VARCHAR(20) NOT NULL COMMENT 'ë¶€ì„œëª…', -- ë¶€ì„œëª…
+	floor     INTEGER     NULL     COMMENT 'ìœ„ì¹˜' -- ìœ„ì¹˜
 )
-COMMENT 'ºÎ¼­';
+COMMENT 'ë¶€ì„œ';
 
--- ºÎ¼­
+-- ë¶€ì„œ
 ALTER TABLE gradle_jdbc_study.department
-	ADD CONSTRAINT PK_department -- ºÎ¼­ ±âº»Å°
+	ADD CONSTRAINT PK_department -- ë¶€ì„œ ê¸°ë³¸í‚¤
 		PRIMARY KEY (
-			dept_no -- ºÎ¼­¹øÈ£
+			dept_no -- ë¶€ì„œë²ˆí˜¸
 		);
 
--- »ç¿ø
+-- ì‚¬ì›
 CREATE TABLE gradle_jdbc_study.employee (
-	emp_no   INTEGER     NOT NULL COMMENT '»ç¿ø¹øÈ£', -- »ç¿ø¹øÈ£
-	emp_name VARCHAR(20) NOT NULL COMMENT '»ç¿ø¸í', -- »ç¿ø¸í
-	title    INTEGER     NULL     COMMENT 'Á÷Ã¥', -- Á÷Ã¥
-	manager  INTEGER     NULL     COMMENT 'Á÷¼Ó»ó»ç', -- Á÷¼Ó»ó»ç
-	salary   INTEGER     NULL     COMMENT '±Ş¿©', -- ±Ş¿©
-	dept     INTEGER     NULL     COMMENT 'ºÎ¼­', -- ºÎ¼­
-	pic      LONGBLOB    NULL     COMMENT 'Áõ¸í»çÁø', -- Áõ¸í»çÁø
-	pass     CHAR(41)    NULL     COMMENT 'ºñ¹Ğ¹øÈ£' -- ºñ¹Ğ¹øÈ£
+	emp_no    INTEGER     NOT NULL COMMENT 'ì‚¬ì›ë²ˆí˜¸', -- ì‚¬ì›ë²ˆí˜¸
+	emp_name  VARCHAR(20) NOT NULL COMMENT 'ì‚¬ì›ëª…', -- ì‚¬ì›ëª…
+	title     INTEGER     NULL     COMMENT 'ì§ì±…', -- ì§ì±…
+	manager   INTEGER     NULL     COMMENT 'ì§ì†ìƒì‚¬', -- ì§ì†ìƒì‚¬
+	salary    INTEGER     NULL     COMMENT 'ê¸‰ì—¬', -- ê¸‰ì—¬
+	dept      INTEGER     NULL     COMMENT 'ë¶€ì„œ', -- ë¶€ì„œ
+	pic       LONGBLOB    NULL     COMMENT 'ì¦ëª…ì‚¬ì§„', -- ì¦ëª…ì‚¬ì§„
+	passwd    CHAR(41)    NULL     COMMENT 'ë¹„ë°€ë²ˆí˜¸', -- ë¹„ë°€ë²ˆí˜¸
+	hire_date DATETIME    NOT NULL COMMENT 'ì…ì‚¬ì¼' -- ì…ì‚¬ì¼
 )
-COMMENT '»ç¿ø';
+COMMENT 'ì‚¬ì›';
 
--- »ç¿ø
+-- ì‚¬ì›
 ALTER TABLE gradle_jdbc_study.employee
-	ADD CONSTRAINT PK_employee -- »ç¿ø ±âº»Å°
+	ADD CONSTRAINT PK_employee -- ì‚¬ì› ê¸°ë³¸í‚¤
 		PRIMARY KEY (
-			emp_no -- »ç¿ø¹øÈ£
+			emp_no -- ì‚¬ì›ë²ˆí˜¸
 		);
 
--- »ç¿ø
+-- ì‚¬ì›
 ALTER TABLE gradle_jdbc_study.employee
-	ADD CONSTRAINT FK_employee_TO_employee -- »ç¿ø -> »ç¿ø
+	ADD CONSTRAINT FK_employee_TO_employee -- ì‚¬ì› -> ì‚¬ì›
 		FOREIGN KEY (
-			manager -- Á÷¼Ó»ó»ç
+			manager -- ì§ì†ìƒì‚¬
 		)
-		REFERENCES gradle_jdbc_study.employee ( -- »ç¿ø
-			emp_no -- »ç¿ø¹øÈ£
+		REFERENCES gradle_jdbc_study.employee ( -- ì‚¬ì›
+			emp_no -- ì‚¬ì›ë²ˆí˜¸
 		);
 
--- »ç¿ø
+-- ì‚¬ì›
 ALTER TABLE gradle_jdbc_study.employee
-	ADD CONSTRAINT FK_department_TO_employee -- ºÎ¼­ -> »ç¿ø
+	ADD CONSTRAINT FK_department_TO_employee -- ë¶€ì„œ -> ì‚¬ì›
 		FOREIGN KEY (
-			dept -- ºÎ¼­
+			dept -- ë¶€ì„œ
 		)
-		REFERENCES gradle_jdbc_study.department ( -- ºÎ¼­
-			dept_no -- ºÎ¼­¹øÈ£
+		REFERENCES gradle_jdbc_study.department ( -- ë¶€ì„œ
+			dept_no -- ë¶€ì„œë²ˆí˜¸
 		);
-		
--- »ç¿ëÀÚ Ãß°¡
+	
+-- ì‚¬ìš©ì ì¶”ê°€
 drop user if exists 'user_gradle_jdbc'@'localhost';
 grant all privileges on gradle_jdbc_study.* to 'user_gradle_jdbc_study'@'localhost'
 identified by 'rootroot';

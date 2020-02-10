@@ -9,3 +9,5 @@ insert into title values(6, '인턴');
 delete from title where title_no = 6;
 update title set title_name = '회장' where title_no = 1;
 update title set title_name = '사장' where title_no = 1;
+
+select dept_no, dept_name, floor from department;
