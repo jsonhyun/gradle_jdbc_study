@@ -13,6 +13,8 @@ public class Employee {
 	private Date hireDate;
 	private byte[] pic;
 	
+	
+
 	public Employee() {
 		// TODO Auto-generated constructor stub
 	}
@@ -67,6 +69,11 @@ public class Employee {
 		this.dept = dept;
 		this.hireDate = hireDate;
 		this.pic = pic;
+	}
+	
+	public Employee(int empNo, String passwd) {
+		this.empNo = empNo;
+		this.passwd = passwd;
 	}
 
 	public int getEmpNo() {
