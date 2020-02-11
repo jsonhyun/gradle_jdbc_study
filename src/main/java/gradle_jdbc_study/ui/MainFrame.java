@@ -18,6 +18,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private LoginFrame loginFrame;
 	private JButton btnLogout;
+	private JLabel lblLoginName;
 	public MainFrame() {
 		initialize();
 	}
@@ -32,7 +33,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JLabel lblLoginName = new JLabel("New label");
+		lblLoginName = new JLabel("New label");
 		lblLoginName.setFont(new Font("굴림", Font.BOLD, 40));
 		lblLoginName.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblLoginName);
@@ -42,11 +43,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(btnLogout);
 		
 		
-		lblLoginName.setText(LoginFrame.loginEmp.getEmpName());
+		loginNameRefresh();
 	}
 
-
-
+	public void loginNameRefresh() {
+		lblLoginName.setText(LoginFrame.loginEmp.getEmpName());
+	}
 	public void setLoginFrame(LoginFrame loginFrame) {
 		this.loginFrame = loginFrame;
 	}

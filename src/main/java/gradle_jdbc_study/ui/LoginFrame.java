@@ -37,6 +37,13 @@ public class LoginFrame extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					//select Look and Feel
+//					UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+//					UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+//					UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
+//					UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+//					UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+//					UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 					LoginFrame frame = new LoginFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -117,6 +124,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 			main.setLoginFrame(this);
 		}
 		dispose();
+		main.loginNameRefresh();
 		main.setVisible(true);
 	}
 	protected void btnCancelActionPerformed(ActionEvent e) {
