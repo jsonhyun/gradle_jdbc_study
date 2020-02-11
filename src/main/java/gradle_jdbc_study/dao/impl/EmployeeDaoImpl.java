@@ -170,4 +170,38 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		return null;
 	}
 
+	@Override
+	public List<Employee> selectEmployeeGroupByDno(Department dept){
+		String sql = "select e.emp_no, e.emp_name , e.title , t.title_name, m.emp_name as manager_name , m.emp_no as manager_no , e.salary , e.dept , d.dept_name " + 
+			     "  from employee e left join employee m on e.manager = m.emp_no join department d on e.dept = d.dept_no join title t on e.title = t.title_no " + 
+			     " where e.dept =?";
+		List<Employee> list = new ArrayList<>();
+		try(Connection con = MySqlDataSource.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);){
+			pstmt.setInt(1, dept.getDeptNo());
+			LogUtil.prnLog(pstmt);
+			try(ResultSet rs = pstmt.executeQuery()){
+				while(rs.next()) {
+					list.add(getEmployeeFull(rs));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	private Employee getEmployeeFull(ResultSet rs) throws SQLException {
+		int empNo = rs.getInt("emp_no");
+		String empName = rs.getString("emp_name");
+		Title title = new Title(rs.getInt("title"), rs.getString("title_name"));
+		Employee manager = new Employee(rs.getInt("manager_no"));
+		manager.setEmpName(rs.getString("manager_name"));
+		int salary = rs.getInt("salary");
+		Department dept = new Department();
+		dept.setDeptNo(rs.getInt("dept"));
+		dept.setDeptName(rs.getString("dept_name"));
+		return new Employee(empNo, empName, title, manager, salary, dept);
+	}
+
 }
