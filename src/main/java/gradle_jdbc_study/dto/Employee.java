@@ -181,17 +181,18 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return String.format(
-				"[%s %s %s %s %s %s %s %s %s]",
-				empNo, 
-				empName, 
-				title.getTitleName(), 
-				manager.getEmpNo(), 
-				salary, 
-				dept.getDeptNo(), 
-				passwd, 
-				String.format("%1$tF %1$tT", hireDate), 
-				pic != null?pic.length:null);
+		return String.format("%s(%d) - %s", empName, empNo, title.getTitleName());
+//		return String.format(
+//				"[%s %s %s %s %s %s %s %s %s]",
+//				empNo, 
+//				empName, 
+//				title.getTitleName(), 
+//				manager.getEmpNo(), 
+//				salary, 
+//				dept.getDeptNo(), 
+//				passwd, 
+//				String.format("%1$tF %1$tT", hireDate), 
+//				pic != null?pic.length:null);
 	}
 
 }

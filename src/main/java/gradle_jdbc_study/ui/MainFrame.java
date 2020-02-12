@@ -4,16 +4,20 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import gradle_jdbc_study.dto.Department;
+import gradle_jdbc_study.dto.Title;
 import gradle_jdbc_study.ui.content.EmployeePanel;
 import gradle_jdbc_study.ui.service.EmployeeUIService;
 
@@ -117,8 +121,20 @@ public class MainFrame extends JFrame implements ActionListener {
 		frame.setBounds(100, 100, 450, 400);
 		EmployeeUIService service = new EmployeeUIService();
 		List<Department> list = service.showDeptList();
+		List<Title> tList = service.showTitleList();
 		EmployeePanel tp = new EmployeePanel();
 		tp.setCmbDeptList(list);
+		tp.getCmbDept().addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					JOptionPane.showMessageDialog(null, e.getItem());
+					tp.setCmbManagerList(service.showManagerList((Department)e.getItem()));
+				}
+			}
+		});
+		tp.setCmbTitleList(tList);
 //		tp.setService(service);
 		frame.getContentPane().add(tp);
 		frame.setVisible(true);

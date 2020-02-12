@@ -18,4 +18,5 @@ public interface EmployeeDao {
 	
 	List<Employee> selectEmployeeGroupByDno(Department dept);
 	List<Employee> selectEmployeeGroupByTno(Title title);
+	
 }
