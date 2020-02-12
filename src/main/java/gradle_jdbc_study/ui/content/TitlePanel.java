@@ -12,13 +12,13 @@ public class TitlePanel extends AbsItemPanel<Title> {
 	private JTextField tfName;
 
 	public TitlePanel() {
-
 		initialize();
 	}
+	
 	private void initialize() {
 		setLayout(new GridLayout(0, 2, 10, 10));
 		
-		JLabel lblNo = new JLabel("New label");
+		JLabel lblNo = new JLabel("번호");
 		lblNo.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblNo);
 		
@@ -26,7 +26,7 @@ public class TitlePanel extends AbsItemPanel<Title> {
 		add(tfNo);
 		tfNo.setColumns(10);
 		
-		JLabel lblName = new JLabel("New label");
+		JLabel lblName = new JLabel("직책명");
 		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
 		add(lblName);
 		
@@ -52,7 +52,6 @@ public class TitlePanel extends AbsItemPanel<Title> {
 	public void clearTf() {
 		tfNo.setText("");
 		tfName.setText("");
-		
 	}
 
 }

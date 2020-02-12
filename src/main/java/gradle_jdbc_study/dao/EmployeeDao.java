@@ -4,6 +4,7 @@ import java.util.List;
 
 import gradle_jdbc_study.dto.Department;
 import gradle_jdbc_study.dto.Employee;
+import gradle_jdbc_study.dto.Title;
 
 public interface EmployeeDao {
 	Employee selectEmployeeByNo(Employee emp);
@@ -16,4 +17,5 @@ public interface EmployeeDao {
 	Employee loginEmployee(Employee emp);
 	
 	List<Employee> selectEmployeeGroupByDno(Department dept);
+	List<Employee> selectEmployeeGroupByTno(Title title);
 }

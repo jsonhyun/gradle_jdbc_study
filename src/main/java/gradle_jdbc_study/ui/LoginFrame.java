@@ -77,6 +77,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		pContent.add(lblNo);
 		
 		tfNo = new JTextField();
+		tfNo.setText("1003");
 		pContent.add(tfNo);
 		tfNo.setColumns(10);
 		
@@ -84,7 +85,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		lblPasswd.setHorizontalAlignment(SwingConstants.RIGHT);
 		pContent.add(lblPasswd);
 		
-		pfPasswd = new JPasswordField();
+		pfPasswd = new JPasswordField("1234567");
 		pContent.add(pfPasswd);
 		
 		JPanel pBtn = new JPanel();
