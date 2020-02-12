@@ -10,18 +10,21 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.toedter.calendar.JDateChooser;
 
 import gradle_jdbc_study.dto.Department;
 import gradle_jdbc_study.dto.Employee;
 import gradle_jdbc_study.dto.Title;
+import gradle_jdbc_study.ui.exception.InvalidCheckException;
 import gradle_jdbc_study.ui.listener.MyDocumentListener;
 
 import javax.swing.JSpinner;
@@ -34,9 +37,11 @@ import java.awt.Dimension;
 import javax.swing.border.EtchedBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class EmployeePanel extends AbsItemPanel<Employee> {
+public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListener {
 	private JTextField tfNo;
 	private JTextField tfName;
 	private JComboBox<Department> cmbDept;
@@ -63,7 +68,8 @@ public class EmployeePanel extends AbsItemPanel<Employee> {
 		setPic(getClass().getClassLoader().getResource("no-image.png").getPath());
 		pWest.add(lblPic);
 		
-		JButton btnPic = new JButton("증명사진");
+		btnPic = new JButton("증명사진");
+		btnPic.addActionListener(this);
 		pWest.add(btnPic);
 		
 		JPanel pCenter = new JPanel();
@@ -168,6 +174,7 @@ public class EmployeePanel extends AbsItemPanel<Employee> {
 			}
 		}
 	};
+	private JButton btnPic;
 	
 	public void setCmbDeptList(List<Department> deptList) {
 		DefaultComboBoxModel<Department> model = new DefaultComboBoxModel<Department>(new Vector<>(deptList));
@@ -188,7 +195,7 @@ public class EmployeePanel extends AbsItemPanel<Employee> {
 	@Override
 	public Employee getItem() {
 		validCheck();
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -206,8 +213,11 @@ public class EmployeePanel extends AbsItemPanel<Employee> {
 
 	@Override
 	public void validCheck() {
-		// TODO Auto-generated method stub
-		
+		if(tfNo.getText().equals("") || tfName.getText().equals("") || 
+				cmbDept.getSelectedIndex() == -1 || cmbManager.getSelectedIndex() == -1 || cmbTitle.getSelectedIndex() == -1 || 
+				!lblPasswdEqual.getText().equals("비밀번호 일치")) {
+			throw new InvalidCheckException();
+		}
 	}
 
 	public void itemStateChanged(ItemEvent e) {
@@ -233,4 +243,22 @@ public class EmployeePanel extends AbsItemPanel<Employee> {
 		return cmbTitle;
 	}
 	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnPic) {
+			btnPicActionPerformed(e);
+		}
+	}
+	protected void btnPicActionPerformed(ActionEvent e) {
+		JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG or PNG or GIF", "jpg","png","gif");
+		chooser.setFileFilter(filter);
+		
+		int res = chooser.showOpenDialog(null);
+		if(res != JFileChooser.APPROVE_OPTION) {
+			JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		String picPath = chooser.getSelectedFile().getPath();
+		setPic(picPath);
+	}
 }
