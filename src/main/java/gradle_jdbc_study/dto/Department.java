@@ -44,7 +44,7 @@ public class Department {
 
 	@Override
 	public String toString() {
-		return "Department [deptNo=" + deptNo + ", deptName=" + deptName + ", floor=" + floor + "]";
+		return String.format("%s(%d)", deptName, deptNo);
 	}
 
 	@Override

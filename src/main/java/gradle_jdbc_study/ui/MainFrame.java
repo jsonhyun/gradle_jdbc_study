@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import gradle_jdbc_study.dto.Department;
+import gradle_jdbc_study.ui.content.EmployeePanel;
+import gradle_jdbc_study.ui.service.EmployeeUIService;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements ActionListener {
@@ -108,5 +113,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		frame.setVisible(true);
 	}
 	protected void btnEmployeeActionPerformed(ActionEvent e) {
+		JFrame frame = new JFrame();
+		frame.setBounds(100, 100, 450, 400);
+		EmployeeUIService service = new EmployeeUIService();
+		List<Department> list = service.showDeptList();
+		EmployeePanel tp = new EmployeePanel();
+		tp.setCmbDeptList(list);
+//		tp.setService(service);
+		frame.getContentPane().add(tp);
+		frame.setVisible(true);
 	}
 }
