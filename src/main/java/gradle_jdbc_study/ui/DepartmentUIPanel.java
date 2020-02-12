@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import gradle_jdbc_study.dto.Department;
 import gradle_jdbc_study.dto.Employee;
 import gradle_jdbc_study.ui.content.DepartmentPanel;
+import gradle_jdbc_study.ui.exception.InvalidCheckException;
 import gradle_jdbc_study.ui.list.DepartmentTblPanel;
 import gradle_jdbc_study.ui.service.DepartmentUiService;
 
@@ -142,6 +143,8 @@ public class DepartmentUIPanel extends JPanel implements ActionListener {
 			pDeptList.addItem(newDept);
 			pDepartment.clearTf();
 			JOptionPane.showMessageDialog(null, "부서가 추가되었습니다.");
+		}catch(InvalidCheckException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}catch(Exception e1) {
 			SQLException e2 = (SQLException) e1;
 			if (e2.getErrorCode() == 1062) {

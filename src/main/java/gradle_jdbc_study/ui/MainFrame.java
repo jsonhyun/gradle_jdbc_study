@@ -19,7 +19,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private LoginFrame loginFrame;
 	private JButton btnLogOut;
 	private JLabel lblLoginName;
-	private JPanel pTop;
 	private JPanel panel;
 	private JButton btnTitle;
 	private JButton btnDepartment;

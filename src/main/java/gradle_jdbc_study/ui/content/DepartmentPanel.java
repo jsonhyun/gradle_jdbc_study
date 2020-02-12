@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import gradle_jdbc_study.dto.Department;
+import gradle_jdbc_study.ui.exception.InvalidCheckException;
 
 @SuppressWarnings("serial")
 public class DepartmentPanel extends AbsItemPanel<Department> {
@@ -52,6 +53,7 @@ public class DepartmentPanel extends AbsItemPanel<Department> {
 
 	@Override
 	public Department getItem() {
+		validCheck();
 		int deptNo = Integer.parseInt(tfNo.getText().trim());
 		String deptName = tfName.getText().trim();
 		int floor =  Integer.parseInt(tfFloor.getText().trim());
@@ -70,6 +72,12 @@ public class DepartmentPanel extends AbsItemPanel<Department> {
 		tfNo.setText("");
 		tfName.setText("");
 		tfFloor.setText("");		
+	}
+	@Override
+	public void validCheck() {
+		if(tfNo.getText().equals("") || tfName.getText().equals("")) {
+			throw new InvalidCheckException();
+		}
 	}
 
 }

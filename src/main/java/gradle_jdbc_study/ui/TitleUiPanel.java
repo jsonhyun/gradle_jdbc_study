@@ -17,6 +17,7 @@ import javax.swing.JPopupMenu;
 import gradle_jdbc_study.dto.Employee;
 import gradle_jdbc_study.dto.Title;
 import gradle_jdbc_study.ui.content.TitlePanel;
+import gradle_jdbc_study.ui.exception.InvalidCheckException;
 import gradle_jdbc_study.ui.list.TitleTblPanel;
 import gradle_jdbc_study.ui.service.TitleUiService;
 import javax.swing.border.TitledBorder;
@@ -142,7 +143,9 @@ public class TitleUiPanel extends JPanel implements ActionListener{
 			pTitleList.addItem(newTitle);
 			pTitle.clearTf();
 			JOptionPane.showMessageDialog(null, "직책이 추가되었습니다.");
-		} catch (Exception e1) {
+		}catch(InvalidCheckException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+		}catch (Exception e1) {
 			SQLException e2 = (SQLException) e1;
 			if(e2.getErrorCode() == 1062) {
 				JOptionPane.showMessageDialog(null, "직책번호가 중복");
