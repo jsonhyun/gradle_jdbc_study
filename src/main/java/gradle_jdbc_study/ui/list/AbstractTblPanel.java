@@ -20,6 +20,7 @@ public abstract class AbstractTblPanel<T> extends JPanel {
 	private JScrollPane scrollPane;
 	protected JTable table;
 	protected NotEditableModel model;
+	protected List<T> list;
 
 	public AbstractTblPanel() {
 		initialize();
@@ -43,6 +44,7 @@ public abstract class AbstractTblPanel<T> extends JPanel {
 	}
 	
 	public void loadData(List<T> items) {
+		list = items;
 		model = new NotEditableModel(getRows(items),	getColNames());
 		table.setModel(model);
 

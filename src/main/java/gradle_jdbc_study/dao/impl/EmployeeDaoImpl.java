@@ -62,19 +62,38 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public List<Employee> selectEmployeeByAll() {
-		String sql = "select emp_no, emp_name, title, manager, salary, dept, hire_date from employee";
+//		String sql = "select emp_no, emp_name, title, manager, salary, dept, hire_date from employee";
+		String sql = "select e.emp_no, e.emp_name, t.title_no, t.title_name, m.emp_no as manager_no, m.emp_name as manager_name,"  
+				   + "       e.salary, d.dept_no, d.dept_name, e.hire_date, e.pic"  
+				   + "  from employee e left join title t on e.title = t.title_no"  
+				   + " 	     left join employee m on e.manager = m.emp_no"  
+				   + " 	     left join department d on e.dept = d.dept_no";
 		try(Connection con = MySqlDataSource.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql);
 				ResultSet rs = pstmt.executeQuery()){
 			List<Employee> list = new ArrayList<Employee>();
 			while(rs.next()) {
-				list.add(getEmployee(rs, false));
+				list.add(getEmployeeJoin(rs));
 			}
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private Employee getEmployeeJoin(ResultSet rs) throws SQLException {
+		int empNo = rs.getInt("emp_no");
+		String empName = rs.getString("emp_name");
+		Title title = new Title(rs.getInt("title_no"), rs.getString("title_name"));
+		Employee manager = new Employee(rs.getInt("manager_no"));
+		manager.setEmpName(rs.getString("manager_name"));
+		int salary = rs.getInt("salary");
+		Department dept = new Department(rs.getInt("dept_no"));
+		dept.setDeptName(rs.getString("dept_name"));
+		Date hireDate = rs.getTimestamp("hire_date");
+		byte[] pic = rs.getBytes("pic");
+		return new Employee(empNo, empName, title, manager, salary, dept, hireDate, pic);
 	}
 
 	@Override

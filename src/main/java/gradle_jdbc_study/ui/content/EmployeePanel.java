@@ -1,21 +1,39 @@
 package gradle_jdbc_study.ui.content;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -26,19 +44,7 @@ import gradle_jdbc_study.dto.Employee;
 import gradle_jdbc_study.dto.Title;
 import gradle_jdbc_study.ui.exception.InvalidCheckException;
 import gradle_jdbc_study.ui.listener.MyDocumentListener;
-
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JPasswordField;
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.BoxLayout;
-import java.awt.Dimension;
-import javax.swing.border.EtchedBorder;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import gradle_jdbc_study.ui.service.EmployeeUIService;
 
 @SuppressWarnings("serial")
 public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListener {
@@ -52,7 +58,12 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 	private JLabel lblPasswdEqual;
 	private Dimension picDimension = new Dimension(100, 150);
 	private JLabel lblPic;
-
+	private JButton btnPic;
+	private JSpinner spSalary;
+	private JDateChooser tfHireDate;
+	private String picPath;
+	private EmployeeUIService service;
+	
 	public EmployeePanel() {
 		setLayout(new BorderLayout(0, 0));
 		
@@ -117,14 +128,14 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 		lblHireDate.setHorizontalAlignment(SwingConstants.RIGHT);
 		pCenter.add(lblHireDate);
 		
-		JDateChooser tfHireDate = new JDateChooser(new Date(), "yyyy-MM-dd hh:mm");
+		tfHireDate = new JDateChooser(new Date(), "yyyy-MM-dd hh:mm");
 		pCenter.add(tfHireDate);
 		
 		JLabel lblSalary = new JLabel("급여");
 		lblSalary.setHorizontalAlignment(SwingConstants.RIGHT);
 		pCenter.add(lblSalary);
 		
-		JSpinner spSalary = new JSpinner();
+		spSalary = new JSpinner();
 		spSalary.setModel(new SpinnerNumberModel(1500000, 1000000, 5000000, 100000));
 		pCenter.add(spSalary);
 		
@@ -155,10 +166,24 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 		pCenter.add(lblPasswdEqual);
 	}
 	
-	private void setPic(String imgPath) {
-		lblPic.setIcon(new ImageIcon(new ImageIcon(imgPath).getImage().getScaledInstance((int)picDimension.getWidth(), (int)picDimension.getHeight(), Image.SCALE_DEFAULT)));
-	}
 	
+	
+	public void setService(EmployeeUIService service) {
+		this.service = service;
+		setCmbDeptList(service.showDeptList());
+		setCmbTitleList(service.showTitleList());
+		cmbDept.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					setCmbManagerList(service.showManagerList((Department)cmbDept.getSelectedItem()));
+				}
+			}
+		});
+	}
+
+
 	DocumentListener docListener = new MyDocumentListener() {
 		
 		@Override
@@ -174,7 +199,7 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 			}
 		}
 	};
-	private JButton btnPic;
+	
 	
 	public void setCmbDeptList(List<Department> deptList) {
 		DefaultComboBoxModel<Department> model = new DefaultComboBoxModel<Department>(new Vector<>(deptList));
@@ -195,20 +220,74 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 	@Override
 	public Employee getItem() {
 		validCheck();
-		
-		return null;
+		int empNo = Integer.parseInt(tfNo.getText().trim());
+		String empName = tfName.getText().trim();
+		Title title = (Title)cmbTitle.getSelectedItem();
+		Employee manager = (Employee)cmbManager.getSelectedItem();
+		int salary = (int)spSalary.getValue();
+		Department dept = (Department)cmbDept.getSelectedItem();
+		String passwd = new String(pfPasswd1.getPassword());
+		Date hireDate = tfHireDate.getDate();
+		byte[] pic = getImage();
+		return new Employee(empNo, empName, title, manager, salary, dept, passwd, hireDate, pic);
 	}
 
+	private byte[] getImage() {
+		
+		byte[] pic = null;
+		File file = new File(picPath);
+		try(InputStream is = new FileInputStream(file)){
+			pic = new byte[is.available()];
+			is.read(pic);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return pic;
+	}
+
+	private void setPic(String imgPath) {
+		picPath = imgPath;
+		lblPic.setIcon(new ImageIcon(new ImageIcon(imgPath).getImage().getScaledInstance((int)picDimension.getWidth(), 
+				(int)picDimension.getHeight(), Image.SCALE_DEFAULT)));
+	}
+	
+	private void setPic(byte[] byteImg) {
+		lblPic.setIcon(new ImageIcon(new ImageIcon(byteImg).getImage().getScaledInstance((int)picDimension.getWidth(), 
+				(int)picDimension.getHeight(), Image.SCALE_DEFAULT)));
+	}
+	
 	@Override
 	public void setItem(Employee item) {
-		// TODO Auto-generated method stub
+		tfNo.setText(item.getEmpNo()+"");
+		tfName.setText(item.getEmpName());
+		cmbDept.setSelectedItem(item.getDept());
+		cmbTitle.setSelectedItem(item.getTitle()); //안되면 title equals 오버라이드를 하지 않음
+		cmbManager.setSelectedItem(item.getManager());
+		spSalary.setValue(item.getSalary());
+		pfPasswd1.setText("");
+		pfPasswd2.setText("");
+		tfHireDate.setDate(item.getHireDate());
+		setPic(item.getPic());
+		lblPasswdEqual.setText("");
 		
 	}
 
 	@Override
 	public void clearTf() {
-		// TODO Auto-generated method stub
-		
+		tfNo.setText("");
+		tfName.setText("");;
+		cmbTitle.setSelectedIndex(-1);
+		cmbManager.setSelectedIndex(-1);
+		spSalary.setValue(1500000);
+		cmbDept.setSelectedIndex(-1);
+		pfPasswd1.setText("");
+		pfPasswd2.setText("");
+		tfHireDate.setDate(new Date());
+		setPic(getClass().getClassLoader().getResource("no-image.png").getPath());
+		lblPasswdEqual.setText("");
+		byte[] pic = getImage();
 	}
 
 	@Override
@@ -258,7 +337,7 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 			JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		String picPath = chooser.getSelectedFile().getPath();
+		picPath = chooser.getSelectedFile().getPath();
 		setPic(picPath);
 	}
 }

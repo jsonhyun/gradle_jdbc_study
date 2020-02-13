@@ -17,6 +17,7 @@ import gradle_jdbc_study.ui.content.EmployeePanel;
 import gradle_jdbc_study.ui.exception.InvalidCheckException;
 import gradle_jdbc_study.ui.list.EmployeeTblPanel;
 import gradle_jdbc_study.ui.service.EmployeeUIService;
+import gradle_jdbc_study.util.LogUtil;
 
 @SuppressWarnings("serial")
 public class EmployeeUIPanel extends JPanel implements ActionListener {
@@ -40,6 +41,7 @@ public class EmployeeUIPanel extends JPanel implements ActionListener {
 		pContent.setLayout(new BorderLayout(0, 0));
 		
 		pEmployee = new EmployeePanel();
+		pEmployee.setService(service);
 		pContent.add(pEmployee, BorderLayout.CENTER);
 		
 		JPanel pBtns = new JPanel();
@@ -118,15 +120,17 @@ public class EmployeeUIPanel extends JPanel implements ActionListener {
 
 	protected void btnCancelActionPerformed(ActionEvent e) {
 		pEmployee.clearTf();
+		btnAdd.setText("추가");
 	}
 	
 	protected void btnAddActionPerformed(ActionEvent e) {
 		try {
 			Employee newEmp = pEmployee.getItem();
+			LogUtil.prnLog(newEmp.toDebug());
 			service.addEmployee(newEmp);
 			pEmployeeList.addItem(newEmp);
 			pEmployee.clearTf();
-			JOptionPane.showMessageDialog(null, "부서가 추가되었습니다.");
+			JOptionPane.showMessageDialog(null, String.format("%s(%d) 추가되었습니다.", newEmp.getEmpName(), newEmp.getEmpNo()));
 		}catch(InvalidCheckException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}catch(Exception e1) {

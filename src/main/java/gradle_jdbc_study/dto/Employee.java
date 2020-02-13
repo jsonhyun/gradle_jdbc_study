@@ -79,7 +79,7 @@ public class Employee {
 		this.hireDate = hireDate;
 		this.pic = pic;
 	}
-	
+
 	public Employee(int empNo, String passwd) {
 		this.empNo = empNo;
 		this.passwd = passwd;
@@ -182,17 +182,19 @@ public class Employee {
 	@Override
 	public String toString() {
 		return String.format("%s(%d) - %s", empName, empNo, title.getTitleName());
-//		return String.format(
-//				"[%s %s %s %s %s %s %s %s %s]",
-//				empNo, 
-//				empName, 
-//				title.getTitleName(), 
-//				manager.getEmpNo(), 
-//				salary, 
-//				dept.getDeptNo(), 
-//				passwd, 
-//				String.format("%1$tF %1$tT", hireDate), 
-//				pic != null?pic.length:null);
 	}
-
+	
+	public String toDebug() {
+		return String.format(
+		"[%s %s %s %s %s %s %s %s %s]",
+		empNo, 
+		empName, 
+		title.getTitleName(), 
+		manager.getEmpNo(), 
+		salary, 
+		dept.getDeptNo(), 
+		passwd, 
+		String.format("%1$tF %1$tT", hireDate), 
+		pic != null?pic.length:null);
+	}
 }
