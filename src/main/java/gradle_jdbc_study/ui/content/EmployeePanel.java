@@ -254,7 +254,7 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 	}
 	
 	private void setPic(byte[] byteImg) {
-		lblPic.setIcon(new ImageIcon(new ImageIcon(byteImg).getImage().getScaledInstance((int)picDimension.getWidth(), 
+			lblPic.setIcon(new ImageIcon(new ImageIcon(byteImg).getImage().getScaledInstance((int)picDimension.getWidth(), 
 				(int)picDimension.getHeight(), Image.SCALE_DEFAULT)));
 	}
 	
@@ -269,7 +269,11 @@ public class EmployeePanel extends AbsItemPanel<Employee> implements ActionListe
 		pfPasswd1.setText("");
 		pfPasswd2.setText("");
 		tfHireDate.setDate(item.getHireDate());
-		setPic(item.getPic());
+		if(item.getPic() == null) {
+			setPic(getClass().getClassLoader().getResource("no-image.png").getPath());
+		}else {
+			setPic(item.getPic());
+		}
 		lblPasswdEqual.setText("");
 		
 	}

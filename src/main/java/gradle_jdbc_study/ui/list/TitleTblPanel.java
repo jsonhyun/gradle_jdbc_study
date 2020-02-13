@@ -30,13 +30,4 @@ public class TitleTblPanel extends AbstractTblPanel<Title> {
 		model.setValueAt(item.getTitleName(), updateIdx, 1);
 	}
 
-	@Override
-	public Title getSelectedItem() {
-		int selectedIdx = getSelectedRowIdx();
-		int titleNo = (int) model.getValueAt(selectedIdx, 0);
-		String titleName = (String) model.getValueAt(selectedIdx, 1);
-		return new Title(titleNo, titleName);
-	}
-
-
 }

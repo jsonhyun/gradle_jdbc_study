@@ -112,7 +112,9 @@ public class EmployeeUIPanel extends JPanel implements ActionListener {
 	private void btnUpdateActionPerformed(ActionEvent e) {
 		Employee upEmp = pEmployee.getItem();
 		service.modifyEmployee(upEmp);
+		
 		pEmployeeList.updateRow(upEmp, pEmployeeList.getSelectedRowIdx());
+		
 		btnAdd.setText("추가");
 		pEmployee.clearTf();
 		JOptionPane.showMessageDialog(null, "부서가 수정되었습니다.");		

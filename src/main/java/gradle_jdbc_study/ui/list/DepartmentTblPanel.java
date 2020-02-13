@@ -33,13 +33,6 @@ public class DepartmentTblPanel extends AbstractTblPanel<Department> {
 		model.setValueAt(item.getFloor(), updateIdx, 2);
 	}
 
-	@Override
-	public Department getSelectedItem() {
-		int selectedIdx = getSelectedRowIdx();
-		int deptNo = (int) model.getValueAt(selectedIdx, 0);
-		String deptName = (String) model.getValueAt(selectedIdx, 1);
-		int floor = (int) model.getValueAt(selectedIdx, 2);
-		return new Department(deptNo, deptName, floor);
-	}
+
 
 }

@@ -106,7 +106,10 @@ public abstract class AbstractTblPanel<T> extends JPanel {
 		return selectedIdx;
 	}
 	
-	public abstract T getSelectedItem();
+	public T getSelectedItem() {
+		int selectedIdx = getSelectedRowIdx();
+		return list.get(selectedIdx);
+	};
 	
 	//수정금지하기위한 모델 선언
 	protected class NotEditableModel extends DefaultTableModel{

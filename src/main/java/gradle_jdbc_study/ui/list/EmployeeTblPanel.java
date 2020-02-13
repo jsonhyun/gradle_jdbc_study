@@ -2,9 +2,7 @@ package gradle_jdbc_study.ui.list;
 
 import javax.swing.SwingConstants;
 
-import gradle_jdbc_study.dto.Department;
 import gradle_jdbc_study.dto.Employee;
-import gradle_jdbc_study.dto.Title;
 
 @SuppressWarnings("serial")
 public class EmployeeTblPanel extends AbstractTblPanel<Employee> {
@@ -55,29 +53,19 @@ public class EmployeeTblPanel extends AbstractTblPanel<Employee> {
 		model.setValueAt(item.getEmpNo(), updateIdx, 0);//사원번호
 		model.setValueAt(item.getEmpName(), updateIdx, 1);//사원명
 		model.setValueAt(item.getTitle(), updateIdx, 2);//직책
-		model.setValueAt(item.getManager().getEmpNo(), updateIdx, 3);//직속상사번호
-		model.setValueAt(item.getSalary(), updateIdx, 4);//급여
-		model.setValueAt(item.getDept().getDeptNo(), updateIdx, 5);//소속부서번호		
+		String manager;
+		if (item.getManager().getEmpNo()==0) {
+			manager = "";
+		}else {
+			manager = String.format("%s(%d)", item.getManager().getEmpName(), item.getManager().getEmpNo());
+		}
+		model.setValueAt(manager, updateIdx, 3);//직속상사번호
+		model.setValueAt(String.format("%,d", item.getSalary()), updateIdx, 4);//급여
+		model.setValueAt(item.getDept(), updateIdx, 5);//소속부서번호
+		model.setValueAt(String.format("%tF", item.getHireDate()), updateIdx, 6);
+		String picExist = item.getPic()==null?"없음":"있음";
+		model.setValueAt(picExist, updateIdx, 7);
 	}
 
-	@Override
-	public Employee getSelectedItem() {
-		int selectedIdx = getSelectedRowIdx();
-		return list.get(selectedIdx);
-//		int empNo = (int) model.getValueAt(selectedIdx, 0);
-//		String empName = (String) model.getValueAt(selectedIdx, 1);
-////		Title title = new Title((int) model.getValueAt(selectedIdx, 2)); 
-//		String titleStr = (String)model.getValueAt(selectedIdx, 2); //사원(5)
-//		int titleNo = Integer.parseInt(titleStr.substring(titleStr.indexOf("(")+1, titleStr.lastIndexOf(")")));
-//		Title title = new Title(titleNo);
-//		Employee manager = new Employee((int)model.getValueAt(selectedIdx, 3));
-////		String managerStr = (String)model.getValueAt(selectedIdx, 3);
-////		int managerNo = Integer.parseInt(managerStr.substring(managerStr.indexOf("("), managerStr.lastIndexOf(")")));
-////		Employee manager = new Employee(managerNo);
-//		int salary = (int) model.getValueAt(selectedIdx, 4);
-//		Department dept = new Department();
-//		dept.setDeptNo((int) model.getValueAt(selectedIdx, 5));
-//		return new Employee(empNo, empName, title, manager, salary, dept);
-	}
 
 }
