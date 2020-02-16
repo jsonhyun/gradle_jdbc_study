@@ -75,7 +75,7 @@ public class DepartmentDaoTest {
 	@Test
 	public void test04UpdateDepartment() {
 		LogUtil.prnLog(Thread.currentThread().getStackTrace()[1].getMethodName()+"()");
-		Department department = new Department(2);
+		Department department = new Department(5,"모바일개발",60);
 		int res = dao.updateDepartment(department);
 		Assert.assertEquals(1, res);
 	}

@@ -6,6 +6,8 @@ import gradle_jdbc_study.dto.Department;
 
 @SuppressWarnings("serial")
 public class DepartmentTblPanel extends AbstractTblPanel<Department> {
+	public DepartmentTblPanel() {
+	}
 
 	@Override
 	protected void setTblWidthAlign() {

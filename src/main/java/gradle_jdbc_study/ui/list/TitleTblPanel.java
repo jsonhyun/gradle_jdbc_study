@@ -6,6 +6,8 @@ import gradle_jdbc_study.dto.Title;
 
 @SuppressWarnings("serial")
 public class TitleTblPanel extends AbstractTblPanel<Title> {
+	public TitleTblPanel() {
+	}
 
 	@Override
 	protected void setTblWidthAlign() {

@@ -92,7 +92,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 			LogUtil.prnLog(pstmt);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 		return res;
 	}
